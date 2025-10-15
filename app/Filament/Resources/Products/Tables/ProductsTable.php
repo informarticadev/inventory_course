@@ -2,9 +2,13 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Filament\Exports\ProductExporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -62,7 +66,17 @@ class ProductsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    ExportBulkAction::make()
+                        ->exporter(ProductExporter::class)
+                        ->fileDisk('local')
+                        ->formats([
+                            ExportFormat::Csv
+                        ])
                 ]),
-            ]);
+            ])
+            /* ->headerActions([
+                ExportAction::make()
+                    ->exporter(ProductExporter::class)
+            ]) */;
     }
 }
